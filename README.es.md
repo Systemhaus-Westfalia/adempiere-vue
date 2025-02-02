@@ -56,7 +56,7 @@ Este es una gran UI para [ADempiere ERP, CRM & SCM](https://github.com/adempiere
 
 **La versión actual `v1.0+` está construida con `vue-cli`. Si encuentra algún problema, por favor escriba un [reporte de error](https://github.com/adempiere/adempiere-vue/issues/new).**
 
-**Este proyecto no está soportado para versiones muy viejas de navegadores (e.g. IE).**
+**Este proyecto no está apoyado para versiones antiguas de navegadores (e.g. IE).**
 
 ## Preparación
 
