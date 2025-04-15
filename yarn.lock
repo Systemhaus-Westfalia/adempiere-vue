@@ -6139,6 +6139,10 @@ etag@~1.8.1:
   version "0.4.1"
   resolved "git://github.com/adobe-webplatform/eve.git#eef80ed8d188423c2272746fb8ae5cc8dad84cb1"
 
+"eve@https://github.com/adobe-webplatform/eve.git":
+  version "0.5.4"
+  resolved "https://github.com/adobe-webplatform/eve.git#30c41dfb9de9679ea4fba10f192cc08cf7142b02"
+
 event-pubsub@4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/event-pubsub/-/event-pubsub-4.3.0.tgz#f68d816bc29f1ec02c539dc58c8dd40ce72cb36e"
