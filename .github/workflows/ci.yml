@@ -29,7 +29,7 @@ jobs:
 
   # Build dist application ADempiere-Vue
   build-app:
-    name: Build dist adempiere-vue
+    name: Build Dist adempiere-vue Prueba
     runs-on: ubuntu-latest
 
     steps:
@@ -39,7 +39,7 @@ jobs:
       - name: Node configuration
         uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: '14.x'
           cache: 'yarn'
 
       - name: Enable https to install packages
@@ -67,7 +67,7 @@ jobs:
         run: yarn build:prod
 
       - name: Upload dist app
-        uses: actions/upload-artifact@v3  # Cambiado a la versión 3
+        uses: actions/upload-artifact@v4  # Cambiado a la versión 4
         with:
           name: adempiere-vue
           path: dist
