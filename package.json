@@ -34,6 +34,7 @@
     "test:ci": "yarn lint && yarn test:unit"
   },
   "dependencies": {
+    "eve": "https://github.com/adobe-webplatform/eve.git",
     "@fullcalendar/core": "6.1.10",
     "@fullcalendar/daygrid": "6.1.10",
     "@fullcalendar/interaction": "^6.1.15",

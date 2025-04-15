@@ -39,11 +39,14 @@ jobs:
       - name: Node configuration
         uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: '14.21.3'
           cache: 'yarn'
 
       - name: Enable https to install packages
         run: git config --global url."https://".insteadOf git://
+
+      - name: Install Yarn
+        run: npm install -g yarn@1.22.22
 
       # - name: Install packages lerna
       #   run: yarn global add lerna
