@@ -29,7 +29,7 @@ jobs:
 
   # Build dist application ADempiere-Vue
   build-app:
-    name: Build Dist adempiere-vue Prueba
+    name: Build Dist ADempiere-Vue
     runs-on: ubuntu-latest
 
     steps:
@@ -48,20 +48,11 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn@1.22.22
 
-      # - name: Install packages lerna
-      #   run: yarn global add lerna
-
-      # - name: Update sub module
-      #   run: git submodule update --init --remote
-
       - name: Install packages
         run: yarn ci
 
       - name: Run Linter
         run: yarn lint
-
-      # - name: Run Unit Test
-      #   run: test:unit
 
       - name: Compile dist
         run: yarn build:prod
