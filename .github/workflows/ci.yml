@@ -1,4 +1,4 @@
-# This workflow will run tests using node and then publish a package to GitHub Container Registry and Docker Hub Regitry when a pushed into main branches
+# This workflow will run tests using node and then publish a package to GitHub Container Registry and Docker Hub Registry when a pushed into main branches
 # This file was contributed by EdwinBetanc0urt@outlook.com from ERP Consultores y Asociados, C.A
 
 name: Continuous Integration
@@ -67,7 +67,7 @@ jobs:
         run: yarn build:prod
 
       - name: Upload dist app
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2  # Cambiado a la versión 2
         with:
           name: adempiere-vue
           path: dist
