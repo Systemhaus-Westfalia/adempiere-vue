@@ -58,7 +58,7 @@ jobs:
         run: yarn build:prod
 
       - name: Upload dist app
-        uses: actions/upload-artifact@v4  # Cambiado a la versión 4
+        uses: actions/upload-artifact@v4  # Switch to Versión 4
         with:
           name: adempiere-vue
           path: dist
