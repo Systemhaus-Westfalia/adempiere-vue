@@ -37,23 +37,29 @@ jobs:
           node-version: 14.x
           cache: 'yarn'
 
+      - name: Verfy node version
+        run: node -v
+
       - name: Enable https to install packages
         run: git config --global url."https://".insteadOf git://
 
       - name: Install Yarn
         run: npm install -g yarn@1.22.22
 
+      - name: Verfy yarn version
+        run: yarn -v
+
       - name: Generate static vuepress files
         run: |
-          cd docs
-          yarn ci
-          yarn build
+          cd docs                     # Change to the 'docs' directory
+          yarn ci                     # Install dependencies using Yarn
+          yarn build                  # Generate static files with VuePress
 
       - name: Upload dist docs
-        uses: actions/upload-artifact@v4  # Switch to Versión 4
+        uses: actions/upload-artifact@v4  # Action to upload artifacts
         with:
-          name: adempiere-vue-docs
-          path: docs/.vuepress/dist
+          name: adempiere-vue-docs        # Name of the artifact
+          path: docs/.vuepress/dist        # Path to the generated files
 
       - name: Init new repo in dist folder and commit generated files
         run: |
@@ -66,9 +72,9 @@ jobs:
           git commit -m "docs: ${{ github.event.head_commit.message }}" -a || true
 
       - name: Force push to destination branch
-        uses: ad-m/github-push-action@v0.6.0
+        uses: ad-m/github-push-action@v0.6.0  # Action to push to a specific branch
         with:
-          branch: gh-pages
-          force: true
-          directory: docs/.vuepress/dist
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages                     # Destination branch on GitHub Pages
+          force: true                          # Force the push
+          directory: docs/.vuepress/dist       # Directory to push
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Access token for GitHub
