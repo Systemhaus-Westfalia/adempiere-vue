@@ -9,7 +9,6 @@ on:
   push:
     branches:
       # Push events on master and develop branchs
-      - bugfix/docs
       - main
       - master
       - develop
