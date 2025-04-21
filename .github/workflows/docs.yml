@@ -41,8 +41,14 @@ jobs:
       - name: Enable https to install packages
         run: git config --global url."https://".insteadOf git://
 
+      - name: Verfy node version
+        run: node -v
+
       - name: Install Yarn
         run: npm install -g yarn@1.22.22
+
+      - name: Verfy yarn version
+        run: yarn -v
 
       - name: Generate static vuepress files
         run: |
