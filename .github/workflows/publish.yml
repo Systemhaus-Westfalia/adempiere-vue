@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download build dist app
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: adempiere-vue
 
@@ -120,7 +120,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Download build dist app
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: adempiere-vue
           path: dist
@@ -155,7 +155,7 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
       - name: Download build dist app
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: adempiere-vue
           path: dist
@@ -221,7 +221,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download build dist docs
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: adempiere-vue-docs
 
