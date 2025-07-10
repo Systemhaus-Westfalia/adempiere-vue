@@ -244,7 +244,7 @@ const actions = {
           dispatch('system')
           dispatch('systemDictionary')
           dispatch('systemS3')
-          dispatch('systemReportEngine')
+          // dispatch('systemReportEngine')
           dispatch('currencyPrecision', {
             id: defaultContext[ACCOUNTING_CONTEXT_PREFIX + CURRENCY]
           })
@@ -284,10 +284,13 @@ const actions = {
             defaultContext: defaultContext
           }
 
-          const { role } = sessionInfo
-          commit('SET_ROLE', role)
-          setCurrentRole(role.id)
-          setCurrentClient(role.client.id)
+          const { roleInfo } = sessionInfo
+          commit('SET_ROLE', {
+            ...roleInfo,
+            client: roleInfo.client_info
+          })
+          setCurrentRole(roleInfo.id)
+          setCurrentClient(roleInfo.client_info.id)
           // const currentOrganizationSession = defaultContext.find(context => {
           //   return context.key === defaultContext[`#${ORGANIZATION}`]
           // })
@@ -301,7 +304,7 @@ const actions = {
 
           // wait to establish the client and organization to generate the menu
           await dispatch('getOrganizationsListFromServer', {
-            roleId: role.id,
+            roleId: roleInfo.id,
             organizationId: sessionOrganizationId
           })
 
@@ -319,12 +322,6 @@ const actions = {
           })
 
           dispatch('getRolesListFromServer')
-            .finally(() => {
-              dispatch('searchImageLogoOnServer')
-              dispatch('searchImageUserOnServer', {
-                userInfo
-              })
-            })
         })
         .catch(error => {
           console.warn(`Error ${error.code} getting context session: ${error.message}.`)
@@ -340,6 +337,10 @@ const actions = {
     id
   }) {
     return new Promise((resolve, reject) => {
+      if (isEmptyValue(id)) {
+        resolve()
+        return
+      }
       getCurrencyPrecision({
         id
       })
@@ -912,7 +913,7 @@ const actions = {
     })
   },
   searchImageLogoOnServer({ commit, getters }) {
-    const { client } = getters.getRole
+    const { client_info: client } = getters.getRole
     const url = pathImageWindows({
       clientId: client.uuid,
       tableName: TABLE_NAME_CLIENT,
@@ -1006,10 +1007,10 @@ const getters = {
     if (isEmptyValue(state.role)) {
       return ''
     }
-    if (isEmptyValue(state.role.client)) {
+    if (isEmptyValue(state.role.client_info)) {
       return ''
     }
-    return state.role.client.dictionary_code
+    return state.role.client_info.dictionary_code
   },
   getDictionaryVersion: (state) => {
     return state.dictionary
