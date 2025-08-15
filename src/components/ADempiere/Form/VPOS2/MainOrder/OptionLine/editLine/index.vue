@@ -342,6 +342,7 @@ export default defineComponent({
 
     function updateUOM(uom_id) {
       store.dispatch('updateCurrentLine', {
+        quantity: props.editLine.quantity,
         lineId: props.editLine.id,
         uom_id
       })
