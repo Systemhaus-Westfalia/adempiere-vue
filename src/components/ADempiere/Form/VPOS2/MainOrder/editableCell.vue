@@ -7,7 +7,6 @@
       @click.stop="onCopy"
     />
 
-    <!-- Estado de Carga -->
     <div v-if="isLoading" class="loading-container">
       <i class="el-icon-loading" />
     </div>
