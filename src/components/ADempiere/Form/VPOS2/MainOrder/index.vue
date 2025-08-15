@@ -39,70 +39,14 @@ along with this program. If not, see <https:www.gnu.org/licenses/>.
           :align="valueOrder.isNumeric ? 'right' : 'left'"
         >
           <template slot-scope="scope">
-            <el-button
-              v-show="valueOrder.columnName === 'LineDescription'"
-              type="text"
-              icon="el-icon-document-copy"
-              @click="copyCode(scope.row)"
+            <editable-cell
+              :row="scope.row"
+              :column="valueOrder"
+              :is-loading="isLoadingFor(valueOrder.columnName)"
+              :display-value="displayValue({ row: scope.row, columnName: valueOrder.columnName })"
+              :update-function="getUpdateFunctionFor(valueOrder.columnName)"
+              :copy-function="copyCode"
             />
-            <span
-              v-if="scope.row.isEditCurrentPrice && valueOrder.columnName === 'CurrentPrice'"
-            >
-              <p
-                v-if="isLoadingPrice"
-                style="text-align: center;margin: 0px;"
-              >
-                <i
-                  class="el-icon-loading"
-                  style="font-size: 20px;"
-                />
-              </p>
-              <edit-amount
-                v-else-if="scope.row.isEditCurrentPrice && valueOrder.columnName === 'CurrentPrice'"
-                :value="Number(scope.row.price)"
-                :handle-change="updateCurrentPrice"
-              />
-            </span>
-            <span
-              v-else-if="scope.row.isEditQtyEntered && valueOrder.columnName === 'QtyEntered'"
-            >
-              <p
-                v-if="isLoadingQty"
-                style="text-align: center;margin: 0px;"
-              >
-                <i
-                  class="el-icon-loading"
-                  style="font-size: 20px;"
-                />
-              </p>
-              <edit-qty-entered
-                v-else-if="scope.row.isEditQtyEntered && valueOrder.columnName === 'QtyEntered'"
-                :qty="Number(scope.row.quantity_ordered)"
-                :handle-change="updateQuantity"
-              />
-            </span>
-            <span
-              v-else-if="scope.row.isEditDiscount && valueOrder.columnName === 'Discount'"
-            >
-              <p
-                v-if="isLoadingDiscount"
-                style="text-align: center;margin: 0px;"
-              >
-                <i
-                  class="el-icon-loading"
-                  style="font-size: 20px;"
-                />
-              </p>
-              <edit-amount
-                v-else
-                :value="Number(scope.row.discount_rate)"
-                :handle-change="updateDiscount"
-                :precision="0"
-              />
-            </span>
-            <span v-else>
-              {{ displayValue({ row: scope.row, columnName: valueOrder.columnName}) }}
-            </span>
           </template>
         </el-table-column>
       </template>
@@ -135,6 +79,7 @@ import {
   sizeTableColumn,
   displayLineQtyEntered
 } from '@/utils/ADempiere/dictionary/form/VPOS'
+import EditableCell from '@/components/ADempiere/Form/VPOS2/MainOrder/editableCell.vue'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 import { copyToClipboard } from '@/utils/ADempiere/coreUtils.js'
 
@@ -143,6 +88,7 @@ export default defineComponent({
   components: {
     OptionLine,
     editAmount,
+    EditableCell,
     editQtyEntered
   },
   setup() {
@@ -235,7 +181,7 @@ export default defineComponent({
       currentLine.value = line
     }
 
-    function editLine(row, column, cell) {
+    function editLine(row, column) {
       const { columnKey } = column
       if (columnKey === 'CurrentPrice') row.isEditCurrentPrice = true
       if (columnKey === 'QtyEntered') row.isEditQtyEntered = true
@@ -441,6 +387,32 @@ export default defineComponent({
       currentLine.value.total_tax_amount = line.total_tax_amount
     }
 
+    function isLoadingFor(columnName) {
+      switch (columnName) {
+        case 'CurrentPrice':
+          return isLoadingPrice.value
+        case 'QtyEntered':
+          return isLoadingQty.value
+        case 'Discount':
+          return isLoadingDiscount.value
+        default:
+          return false
+      }
+    }
+
+    function getUpdateFunctionFor(columnName) {
+      switch (columnName) {
+        case 'CurrentPrice':
+          return updateCurrentPrice
+        case 'QtyEntered':
+          return updateQuantity
+        case 'Discount':
+          return updateDiscount
+        default:
+          return () => {}
+      }
+    }
+
     return {
       currentPos,
       orderLineDefinition,
@@ -460,7 +432,9 @@ export default defineComponent({
       updateCurrentPrice,
       displayLineQtyEntered,
       editLine,
-      copyCode
+      copyCode,
+      isLoadingFor,
+      getUpdateFunctionFor
     }
   }
 })
