@@ -19,7 +19,7 @@ along with this program. If not, see <https:www.gnu.org/licenses/>.
     <el-input-number
       v-show="isFocus"
       ref="qtyField"
-      v-model="qtyEntered"
+      v-model="qtyEnteredNumber"
       controls-position="right"
       :precision="precision"
       autofocus
@@ -38,7 +38,11 @@ along with this program. If not, see <https:www.gnu.org/licenses/>.
 </template>
 
 <script>
-import { defineComponent, ref } from '@vue/composition-api'
+import {
+  defineComponent,
+  computed,
+  ref
+} from '@vue/composition-api'
 
 export default defineComponent({
   name: 'fieldAmount',
@@ -75,8 +79,20 @@ export default defineComponent({
       qtyField.value.select()
     }, 200)
 
+    // Computeds
+    const qtyEnteredNumber = computed({
+      get() {
+        return props.qty
+      },
+      set(value) {
+        return value
+      }
+    })
+
+    // Methods
     function customFocusGained(event) {
       isFocus.value = true
+      qtyField.value.select()
     }
 
     function customFocusLost(event) {
@@ -87,6 +103,8 @@ export default defineComponent({
       isFocus,
       qtyField,
       qtyEntered,
+      // Computeds
+      qtyEnteredNumber,
       // Methods
       customFocusLost,
       customFocusGained

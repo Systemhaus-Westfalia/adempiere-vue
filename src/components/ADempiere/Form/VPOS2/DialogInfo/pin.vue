@@ -42,7 +42,7 @@ along with this program. If not, see <https:www.gnu.org/licenses/>.
         type="password"
         :placeholder="$t('form.pos.tableProduct.pin')"
         :focus="true"
-        @shortkey.native="theActionPin"
+        @change="theActionPin"
       />
       <el-row style="text-align: end;padding: 5px 0px;">
         <span class="dialog-footer">
