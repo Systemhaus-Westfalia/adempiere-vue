@@ -31,7 +31,7 @@ COPY dist/ /usr/share/nginx/html/
 # Add adempiere as user
 RUN addgroup adempiere && \
 	adduser --disabled-password --gecos "" --ingroup adempiere --no-create-home adempiere && \
-	chown -R adempiere /opt/apps/server/ && \
+	chown -R adempiere /usr/share/nginx/html/ && \
 	chmod +x *.sh
 
 USER adempiere
