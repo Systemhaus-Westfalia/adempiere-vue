@@ -12,9 +12,15 @@ ENV PUBLIC_PATH="/" \
 
 
 # Add operative system dependencies
-RUN echo "Set Timezone..." && \
-	echo $TZ > /etc/timezone && \
-	apk add --no-cache tzdata
+RUN	apk update && \
+	apk add --no-cache \
+		bash \
+		tzdata && \
+	rm -rf /var/cache/apk/* && \
+	rm -rf /tmp/* && \
+	echo "Set Timezone..." && \
+	ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+	echo $TZ > /etc/timezone
 
 
 # Copy src files
@@ -22,7 +28,13 @@ COPY build/start.sh .
 COPY dist/ /usr/share/nginx/html/
 
 
-RUN chmod +x *.sh
+# Add adempiere as user
+RUN addgroup adempiere && \
+	adduser --disabled-password --gecos "" --ingroup adempiere --no-create-home adempiere && \
+	chown -R adempiere /opt/apps/server/ && \
+	chmod +x *.sh
+
+USER adempiere
 
 
 ENTRYPOINT ["sh" , "start.sh"]
