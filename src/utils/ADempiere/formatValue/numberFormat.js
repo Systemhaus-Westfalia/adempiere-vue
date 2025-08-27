@@ -389,3 +389,12 @@ export function standardPrecisionContext({
     columnName: GLOBAL_CONTEXT_PREFIX + STD_PRECISION
   })
 }
+/**
+ * Change sing in number `-123` to `123`, `456` to `-456`
+ * Test with `numberValue * -1`
+ * @param {number} numberValue
+ * @returns {number}
+ */
+export function convertToNumber(numberValue) {
+  return Math.abs(numberValue)
+}

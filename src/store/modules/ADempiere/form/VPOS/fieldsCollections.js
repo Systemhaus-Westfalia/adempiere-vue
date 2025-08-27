@@ -75,7 +75,7 @@ const fieldsCollections = {
     value: '',
     phone: '',
     typeOptions: '1',
-    amount: null,
+    amount: 0,
     currencie: {},
     referenceNo: '',
     description: '',
@@ -87,7 +87,7 @@ const fieldsCollections = {
     currentAccount: {},
     currentCustomerCredist: {}
   },
-  amount: null,
+  amount: 0,
   modalPinManager: {}
 }
 
