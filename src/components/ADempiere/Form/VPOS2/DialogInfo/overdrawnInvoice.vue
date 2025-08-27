@@ -61,9 +61,10 @@ along with this program. If not, see <https:www.gnu.org/licenses/>.
           {{ currentPaymentMethods.name }}
         </span>
         <span style="float: right;text-align: end">
+          {{ currentPos.refund_reference_currency }}
           <b>
-            {{ $t('form.pos.collect.overdrawnInvoice.dailyLimit') }}: {{ formatPrice({ value: currentPos.maximum_daily_refund_allowed, currency: currentPos.refund_reference_currency.iso_code }) }}
-            {{ $t('form.pos.collect.overdrawnInvoice.customerLimit') }}: {{ formatPrice({ value: currentPos.maximum_refund_allowed, currency: currentPos.refund_reference_currency.iso_code }) }}
+            {{ $t('form.pos.collect.overdrawnInvoice.dailyLimit') }}: {{ formatPrice({ value: currentPos.maximum_daily_refund_allowed, currency: setCurrency(currentPos) }) }}
+            {{ $t('form.pos.collect.overdrawnInvoice.customerLimit') }}: {{ formatPrice({ value: currentPos.maximum_refund_allowed, currency: setCurrency(currentPos) }) }}
           </b>
         </span>
       </div>
@@ -104,6 +105,7 @@ import ChargeRefund from '@/components/ADempiere/Form/VPOS2/Collection/Refund'
 import CardPayments from '@/components/ADempiere/Form/VPOS2/Collection/Payments/CardPayments.vue'
 // Utils and Helper Methods
 import { formatPrice } from '@/utils/ADempiere/formatValue/numberFormat'
+import { isEmptyValue } from '@/utils/ADempiere'
 // import { isEmptyValue } from '@/utils/ADempiere'
 
 export default defineComponent({
@@ -147,13 +149,26 @@ export default defineComponent({
       return store.getters.getListPayments.filter(list => list.is_refund)
     })
 
+    function setCurrency(currentPos) {
+      if (!isEmptyValue(currentPos)) {
+        if (
+          !isEmptyValue(currentPos.refund_reference_currency) &&
+          !isEmptyValue(currentPos.refund_reference_currency.iso_code)
+        ) {
+          return currentPos.refund_reference_currency.iso_code
+        }
+      }
+      return currentPos.price_list.currency.iso_code
+    }
+
     return {
       typeOptions,
       currentPos,
       currentOrder,
       listPaymentsRefund,
       currentPaymentMethods,
-      formatPrice
+      formatPrice,
+      setCurrency
     }
   }
 })
