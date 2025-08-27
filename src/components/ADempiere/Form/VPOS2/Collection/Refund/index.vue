@@ -50,16 +50,6 @@ along with this program. If not, see <https:www.gnu.org/licenses/>.
         <el-col v-if="typeOptions === '2'" :span="8">
           <banks-accounts />
         </el-col>
-        <!-- Payment Methods (Fields Display Logic) -->
-        <!-- <el-col v-if="isDisplayFieldPayment('creditMemo', currentPaymentMethod)" :span="8">
-          <credit-memo />
-        </el-col> -->
-        <!-- <el-col v-if="isDisplayFieldPayment('recipientBank', currentPaymentMethod)" :span="8">
-          <recipient-bank />
-        </el-col>
-        <el-col v-if="isDisplayFieldPayment('issuingBank', currentPaymentMethod)" :span="8">
-          <issuing-bank />
-        </el-col> -->
         <el-col
           v-if="typeOptions === '2'"
           :span="8"
@@ -127,7 +117,7 @@ import phone from '@/components/ADempiere/Form/VPOS2/Collection/Refund/Field/pho
 import accountNo from '@/components/ADempiere/Form/VPOS2/Collection/Refund/Field/accountNo'
 // Utils and Helper Methods
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
-import { formatPrice } from '@/utils/ADempiere/formatValue/numberFormat'
+import { formatPrice, convertToNumber } from '@/utils/ADempiere/formatValue/numberFormat'
 import { getCurrencyPayment, clearFieldsCollections, isDisplayFieldPayment } from '@/utils/ADempiere/dictionary/form/VPOS'
 
 export default defineComponent({
@@ -282,7 +272,7 @@ export default defineComponent({
     })
 
     const currentAmount = computed(() => {
-      return Number(store.getters.getAttributeField({
+      return convertToNumber(store.getters.getAttributeField({
         field: 'fieldsRefunds',
         attribute: 'amount'
       }))
@@ -292,9 +282,13 @@ export default defineComponent({
       store.commit('setAttributeField', {
         field: 'fieldsRefunds',
         attribute: 'amount',
-        value: Number(currentOrder.value.refund_amount.value)
+        value: convertToNumber(currentOrder.value.refund_amount)
       })
       // store.commit('setPayAmount', currentOrder.value.refund_amount.value)
+    }
+
+    if (!isEmptyValue(currentOrder.value.refund_amount)) {
+      updateAmount(convertToNumber(currentOrder.value.refund_amount))
     }
 
     /**
@@ -316,7 +310,7 @@ export default defineComponent({
       store.commit('setAttributeField', {
         field: 'fieldsRefunds',
         attribute: 'amount',
-        value: Number(currentOrder.value.refund_amount.value)
+        value: convertToNumber(currentOrder.value.refund_amount)
       })
       // store.commit('setAvailableCurrencies', currency)
       clearFieldsCollections()
@@ -327,10 +321,16 @@ export default defineComponent({
         refund_amount
       } = currentOrder.value
       if (isEmptyValue(refund_amount)) return 0.00
-      return Number(store.getters.getAttributeField({
+      const alo = store.getters.getAttributeField({
         field: 'fieldsRefunds',
         attribute: 'amount'
-      }))
+      })
+      return convertToNumber(
+        store.getters.getAttributeField({
+          field: 'fieldsRefunds',
+          attribute: 'amount'
+        })
+      )
     })
 
     const amountDisplay = computed(() => {
@@ -341,7 +341,7 @@ export default defineComponent({
       let currencyPayment = price_list.currency
       if (isEmptyValue(refund_amount)) return '0.00'
       if (!isEmptyValue(currentCurrency.value)) currencyPayment = currentCurrency.value
-      return formatPrice({ value: Number(amount), currency: currencyPayment.iso_code })
+      return formatPrice({ value: convertToNumber(amount.value), currency: currencyPayment.iso_code })
     })
 
     const currentPos = computed(() => {
@@ -381,7 +381,7 @@ export default defineComponent({
             })
         },
         requestedAccess: 'IsAllowsInvoiceOpen',
-        requestedAmount: Number(amount.value),
+        requestedAmount: convertToNumber(amount.value),
         isShowed: true
       })
     }
@@ -420,8 +420,8 @@ export default defineComponent({
       }
       if (
         !isEmptyValue(currentPos.value.maximum_refund_allowed.value) &&
-        Number(currentPos.value.maximum_refund_allowed.value) > 0 &&
-        (Number(currentPos.value.maximum_refund_allowed.value) > amount.value && currentPos.value.refund_reference_currency.id === currency.id)
+        convertToNumber(currentPos.value.maximum_refund_allowed.value) > 0 &&
+        (convertToNumber(currentPos.value.maximum_refund_allowed.value) > amount.value && currentPos.value.refund_reference_currency.id === currency.id)
       ) {
         validatePaye()
       }
@@ -436,6 +436,7 @@ export default defineComponent({
         is_refund: true
       })
         .then(() => {
+          updateAmount(convertToNumber(currentOrder.value.refund_amount))
           isLoadingPay.value = false
         })
     }

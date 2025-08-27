@@ -53,6 +53,7 @@ import lang from '@/lang'
 // Utils and Helper Methods
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { getPaymentValues } from '@/utils/ADempiere/dictionary/form/VPOS'
+import { convertToNumber } from '@/utils/ADempiere/formatValue/numberFormat'
 // import { defaultValueCollections } from '@/utils/ADempiere/dictionary/form/VPOS'
 
 export default defineComponent({
@@ -119,18 +120,18 @@ export default defineComponent({
         open_amount
       } = currentOrder.value
       if (isLoading.value) return
-      const total = Number(grand_total) + Number(charge_amount) - Number(credit_amount) - Number(payment_amount)
+      const total = convertToNumber(grand_total) + convertToNumber(charge_amount) - convertToNumber(credit_amount) - convertToNumber(payment_amount)
       if (total === 0) {
         isLoadingProcess.value = true
         store.dispatch('process', {})
           .then(() => {
             isLoadingProcess.value = false
           })
-      } else if (Number(open_amount) > 0) {
+      } else if (convertToNumber(open_amount) > 0) {
         store.dispatch('setModalDialogVPOS', {
           title: lang.t('form.pos.collect.overdrawnInvoice.below'),
           doneMethod: () => {
-            if (Number(open_amount) > Number(currentPos.value.write_off_amount_tolerance)) {
+            if (convertToNumber(open_amount) > convertToNumber(currentPos.value.write_off_amount_tolerance)) {
               /**
                * Request PIN
                */
@@ -144,7 +145,7 @@ export default defineComponent({
                     })
                 },
                 requestedAccess: 'IsAllowsInvoiceOpen',
-                requestedAmount: Number(open_amount),
+                requestedAmount: convertToNumber(open_amount),
                 isShowed: true
               })
               return
@@ -158,7 +159,7 @@ export default defineComponent({
         store.dispatch('setModalDialogVPOS', {
           title: lang.t('form.pos.collect.overdrawnInvoice.title'),
           doneMethod: () => {
-            if (Number(open_amount) > Number(currentPos.value.write_off_amount_tolerance)) {
+            if (convertToNumber(open_amount) > convertToNumber(currentPos.value.write_off_amount_tolerance)) {
               /**
                * Request PIN
                */
@@ -172,12 +173,26 @@ export default defineComponent({
                     })
                 },
                 requestedAccess: 'IsAllowsInvoiceOpen',
-                requestedAmount: Number(refund_amount),
+                requestedAmount: convertToNumber(refund_amount),
                 isShowed: true
               })
               return
             }
             store.dispatch('process', {})
+          },
+          isDisabledDone: () => {
+            console.log(currentOrder.value.refund_amount)
+            const typeOptions = store.getters.getAttributeField({
+              field: 'fieldsRefunds',
+              attribute: 'typeOptions'
+            })
+            if (typeOptions !== '3') {
+              console.log({ typeOptions, refund_amount }, convertToNumber(currentOrder.value.refund_amount))
+              return convertToNumber(currentOrder.value.refund_amount) !== 0
+            } else {
+              return false
+            }
+            // return convertToNumber(refund_amount) === 0
           },
           componentPath: () => import('@/components/ADempiere/Form/VPOS2/DialogInfo/overdrawnInvoice.vue'),
           isShowed: true
@@ -191,13 +206,14 @@ export default defineComponent({
     return {
       isLoading,
       payAmount,
-      currentOrder,
       currentPos,
+      currentOrder,
       currentAccount,
       isLoadingProcess,
       close,
       addPayment,
-      processOrdes
+      processOrdes,
+      convertToNumber
     }
   }
 })

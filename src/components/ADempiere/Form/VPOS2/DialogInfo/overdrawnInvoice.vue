@@ -25,7 +25,8 @@ along with this program. If not, see <https:www.gnu.org/licenses/>.
           v-model="typeOptions"
           label="1"
         >
-          {{ $t('form.pos.collect.overdrawnInvoice.returned') }} {{ formatPrice({ value: currentOrder.refund_amount, currency: currentOrder.price_list.currency.iso_code }) }}
+          {{ $t('form.pos.collect.overdrawnInvoice.returned') }}
+          {{ formatPrice(setOrdenReturned(currentOrder)) }}
         </el-radio>
       </el-col>
       <el-col
@@ -51,7 +52,6 @@ along with this program. If not, see <https:www.gnu.org/licenses/>.
         </el-radio>
       </el-col>
     </el-row>
-    <br>
     <el-card
       shadow="never"
       :body-style="{ padding: '5px' }"
@@ -63,30 +63,26 @@ along with this program. If not, see <https:www.gnu.org/licenses/>.
         <span style="float: right;text-align: end">
           {{ currentPos.refund_reference_currency }}
           <b>
-            {{ $t('form.pos.collect.overdrawnInvoice.dailyLimit') }}: {{ formatPrice({ value: currentPos.maximum_daily_refund_allowed, currency: setCurrency(currentPos) }) }}
-            {{ $t('form.pos.collect.overdrawnInvoice.customerLimit') }}: {{ formatPrice({ value: currentPos.maximum_refund_allowed, currency: setCurrency(currentPos) }) }}
+            {{ $t('form.pos.collect.overdrawnInvoice.dailyLimit') }}: {{ formatPrice(amountLimit(true)) }}
+            {{ $t('form.pos.collect.overdrawnInvoice.customerLimit') }}: {{ formatPrice(amountLimit()) }}
           </b>
         </span>
       </div>
-      <charge-refund
-        v-if="typeOptions !== '3'"
-      />
+      <charge-refund v-if="typeOptions !== '3'" />
     </el-card>
     <el-card
       v-if="!isEmptyValue(listPaymentsRefund)"
-      shadow="never"
       :body-style="{ padding: '2px' }"
+      shadow="never"
     >
       <el-row :gutter="10">
         <el-col
           v-for="(payment, key) in listPaymentsRefund"
           :key="key"
           :span="8"
-          style="margin: 10px 0px;"
+          class="panel-list-payments-refund"
         >
-          <card-payments
-            :payment="payment"
-          />
+          <card-payments :payment="payment" />
         </el-col>
       </el-row>
     </el-card>
@@ -104,7 +100,7 @@ import store from '@/store'
 import ChargeRefund from '@/components/ADempiere/Form/VPOS2/Collection/Refund'
 import CardPayments from '@/components/ADempiere/Form/VPOS2/Collection/Payments/CardPayments.vue'
 // Utils and Helper Methods
-import { formatPrice } from '@/utils/ADempiere/formatValue/numberFormat'
+import { formatPrice, convertToNumber } from '@/utils/ADempiere/formatValue/numberFormat'
 import { isEmptyValue } from '@/utils/ADempiere'
 // import { isEmptyValue } from '@/utils/ADempiere'
 
@@ -115,7 +111,7 @@ export default defineComponent({
     CardPayments
   },
   setup() {
-    // const typeOptions = ref('1')
+    // Computed
     const typeOptions = computed({
       get() {
         return store.getters.getAttributeField({
@@ -149,24 +145,55 @@ export default defineComponent({
       return store.getters.getListPayments.filter(list => list.is_refund)
     })
 
-    function setCurrency(currentPos) {
-      if (!isEmptyValue(currentPos)) {
-        if (
-          !isEmptyValue(currentPos.refund_reference_currency) &&
-          !isEmptyValue(currentPos.refund_reference_currency.iso_code)
-        ) {
+    const defaultPriceList = computed(() => {
+      return currentPos.value.price_list
+    })
+
+    // Methods
+    function setCurrency() {
+      const { refund_reference_currency } = currentPos.value
+      if (!isEmptyValue(refund_reference_currency)) {
+        if (!isEmptyValue(refund_reference_currency) && !isEmptyValue(refund_reference_currency.iso_code)) {
           return currentPos.refund_reference_currency.iso_code
         }
       }
-      return currentPos.price_list.currency.iso_code
+      const { currency } = defaultPriceList.value
+      return currency.iso_code
+    }
+
+    function setOrdenReturned(orden) {
+      const { refund_amount, price_list } = orden
+      return {
+        value: convertToNumber(refund_amount),
+        currency: price_list.currency.iso_code
+      }
+    }
+
+    function amountLimit(dailyLimit = false) {
+      const { maximum_daily_refund_allowed, maximum_refund_allowed } = currentPos.value
+      if (dailyLimit) {
+        return {
+          value: convertToNumber(maximum_daily_refund_allowed),
+          currency: setCurrency()
+        }
+      }
+      return {
+        value: convertToNumber(maximum_refund_allowed),
+        currency: setCurrency()
+      }
     }
 
     return {
+      // Computed
       typeOptions,
       currentPos,
       currentOrder,
       listPaymentsRefund,
       currentPaymentMethods,
+      // Methods
+      setOrdenReturned,
+      convertToNumber,
+      amountLimit,
       formatPrice,
       setCurrency
     }
@@ -184,6 +211,9 @@ export default defineComponent({
 .line-info {
   width: 100%;
   display: flow-root;
+  margin: 10px 0px;
+}
+.panel-list-payments-refund {
   margin: 10px 0px;
 }
 </style>

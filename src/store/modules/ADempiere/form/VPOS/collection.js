@@ -121,6 +121,7 @@ export default {
             dispatch('overloadOrder', { order: currentOrder })
               .then(() => {
                 defaultValueCollections()
+                resolve(response)
               })
             showMessage({
               type: 'success',
@@ -128,7 +129,6 @@ export default {
               showClose: true
             })
             commit('setPayAmount', 0)
-            resolve(response)
           })
           .catch(error => {
             console.warn(`Add Payment: ${error.message}. Code: ${error.code}.`)
