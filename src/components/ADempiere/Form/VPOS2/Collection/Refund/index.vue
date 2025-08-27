@@ -321,10 +321,6 @@ export default defineComponent({
         refund_amount
       } = currentOrder.value
       if (isEmptyValue(refund_amount)) return 0.00
-      const alo = store.getters.getAttributeField({
-        field: 'fieldsRefunds',
-        attribute: 'amount'
-      })
       return convertToNumber(
         store.getters.getAttributeField({
           field: 'fieldsRefunds',
