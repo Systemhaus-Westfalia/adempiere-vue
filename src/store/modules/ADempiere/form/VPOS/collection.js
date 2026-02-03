@@ -72,6 +72,7 @@ export default {
       getters,
       dispatch
     }, {
+      allocate_payment_id,
       invoice_id,
       bank_id,
       reference_no,
@@ -99,6 +100,7 @@ export default {
         createPayment({
           posId: currentPos.id,
           order_id: currentOrder.id,
+          allocate_payment_id,
           invoice_id,
           bank_id,
           reference_no,
