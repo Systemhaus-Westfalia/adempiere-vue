@@ -709,6 +709,7 @@ export function deleteOrderLine({
 export function createPayment({
   posId,
   order_id,
+  allocate_payment_id,
   invoice_id,
   bank_id,
   reference_no,
@@ -731,6 +732,7 @@ export function createPayment({
     method: 'post',
     data: {
       order_id,
+      allocate_payment_id,
       invoice_id,
       bank_id,
       reference_no,

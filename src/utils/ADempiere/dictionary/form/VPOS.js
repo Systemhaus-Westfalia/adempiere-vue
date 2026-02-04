@@ -304,7 +304,10 @@ export function getPaymentValues({
   customer_bank_account_id,
   invoice_reference_id
 }) {
-  const { payment_method } = store.getters.getPaymentMethods
+  const {
+    id: allocate_payment_id,
+    payment_method
+  } = store.getters.getPaymentMethods
   let amount = store.getters.getPayAmount
   if (isEmptyValue(amount)) amount = store.getters.getCurrentOrder.open_amount
   // Set Currency
@@ -326,6 +329,7 @@ export function getPaymentValues({
   }
 
   return {
+    allocate_payment_id,
     invoice_id,
     bank_id,
     reference_no: referenceNo,
