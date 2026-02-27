@@ -1335,7 +1335,7 @@ export function processCashClosing({
   collectingAgentId
 }) {
   return request({
-    url: `point-of-sales/cash/closings/{id}/process`,
+    url: `point-of-sales/cash/closings/${id}/process`,
     method: 'put',
     data: {
       collecting_agent_id: collectingAgentId,
@@ -1355,10 +1355,9 @@ export function listCashMovements({
   isOnlyRefund
 }) {
   return request({
-    url: `point-of-sales/cash/summary-movements`,
+    url: `point-of-sales/${posId}/cash/summary-movements`,
     method: 'get',
     params: {
-      pos_id: posId,
       is_only_processed: isOnlyProcessed,
       is_only_refund: isOnlyRefund
     }
