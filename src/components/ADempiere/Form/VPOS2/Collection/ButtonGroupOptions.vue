@@ -188,7 +188,7 @@ export default defineComponent({
             })
             if (typeOptions !== '3') {
               console.log({ typeOptions, refund_amount }, convertToNumber(currentOrder.value.refund_amount))
-              return convertToNumber(currentOrder.value.refund_amount) !== 0
+              return convertToNumber(currentOrder.value.refund_amount) === 0
             } else {
               return false
             }

@@ -61,7 +61,7 @@ along with this program. If not, see <https:www.gnu.org/licenses/>.
           {{ currentPaymentMethods.name }}
         </span>
         <span style="float: right;text-align: end">
-          {{ currentPos.refund_reference_currency }}
+          {{ currentPos.refund_reference_currency ? currentPos.refund_reference_currency.iso_code : "" }}
           <b>
             {{ $t('form.pos.collect.overdrawnInvoice.dailyLimit') }}: {{ formatPrice(amountLimit(true)) }}
             {{ $t('form.pos.collect.overdrawnInvoice.customerLimit') }}: {{ formatPrice(amountLimit()) }}
@@ -154,23 +154,23 @@ export default defineComponent({
       const { refund_reference_currency } = currentPos.value
       if (!isEmptyValue(refund_reference_currency)) {
         if (!isEmptyValue(refund_reference_currency) && !isEmptyValue(refund_reference_currency.iso_code)) {
-          return currentPos.refund_reference_currency.iso_code
+          return currentPos.value.refund_reference_currency.iso_code
         }
       }
       const { currency } = defaultPriceList.value
-      return currency.iso_code
+      return currency ? currency.iso_code : ''
     }
 
     function setOrdenReturned(orden) {
       const { refund_amount, price_list } = orden
       return {
         value: convertToNumber(refund_amount),
-        currency: price_list.currency.iso_code
+        currency: price_list.currency ? price_list.currency.iso_code : ''
       }
     }
 
     function amountLimit(dailyLimit = false) {
-      const { maximum_daily_refund_allowed, maximum_refund_allowed } = currentPos.value
+      const { maximum_daily_refund_allowed, maximum_refund_allowed } = currentPaymentMethods.value
       if (dailyLimit) {
         return {
           value: convertToNumber(maximum_daily_refund_allowed),
