@@ -113,6 +113,8 @@ disabled when X → disabled = X
 ```
 
 ### ☑️ Template vs Script
+
+::: v-pre
 ```vue
 <template>
   <!-- ❌ Displays raw object -->
@@ -131,6 +133,7 @@ const displayCurrency = computed(() => {
 })
 </script>
 ```
+:::
 
 ### ⚠️ Syntax Compatibility
 - [ ] Optional chaining `?.` - check if babel config supports it
@@ -282,6 +285,8 @@ return value === 0  // Right - disabled when no value
 ```
 
 ### Pattern 4: Raw Object Display
+
+::: v-pre
 ```vue
 <!-- Symptom: Shows [object Object] or JSON in UI -->
 
@@ -298,6 +303,7 @@ const displayValue = computed(() => {
 })
 </script>
 ```
+:::
 
 ---
 
@@ -545,6 +551,8 @@ Common patterns to investigate:
 Initially edited **ComponentNameV1** version but app actually used **ComponentNameV2** version. **Always verify which component version is actually loaded by matching error line numbers exactly!**
 
 ### Solution Summary
+
+::: v-pre
 ```javascript
 // ComponentName.vue Line XX - Display property not object
 {{ object.property ? object.property.nested : "" }}
@@ -564,6 +572,7 @@ const { data_field_1, data_field_2 } = correctDataSource.value
 // RelatedComponent.vue Line PP - Fix inverted logic
 return value === expectedCondition  // was !== expectedCondition
 ```
+:::
 
 ---
 
