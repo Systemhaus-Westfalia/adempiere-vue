@@ -65,6 +65,10 @@ export default defineComponent({
       return divide_rate.value
     })
 
+    const availableCurrencies = computed(() => {
+      return store.getters.getAvailableCurrencies || { listCurrencies: [], currencie: null }
+    })
+
     const isDisabled = computed(() => {
       const {
         refund_reference_currency
@@ -75,7 +79,8 @@ export default defineComponent({
       return !isEmptyValue(refund_reference_currency)
     })
     const listCurrencies = computed(() => {
-      return store.getters.getAvailableCurrencies.listCurrencies
+      console.log('listCurrencies', availableCurrencies.value.listCurrencies)
+      return availableCurrencies.value.listCurrencies
     })
 
     const currencie = computed({
@@ -84,7 +89,13 @@ export default defineComponent({
           field: 'fieldsRefunds',
           attribute: 'currencie'
         })
-        if (currency) return currency.id
+        console.log('currencie', currency)
+        console.log({ currentOrder: currentOrder.value })
+        if (!isEmptyValue(currency)) return currency.id
+        if (!isEmptyValue(availableCurrencies.value.currencie)) {
+          console.log({ ...availableCurrencies.value.currencie })
+          return availableCurrencies.value.currencie.id
+        }
         return ''
       },
       // setter
@@ -161,12 +172,19 @@ export default defineComponent({
       }
     })
 
+    if (
+      !isEmptyValue(currencie.value) &&
+      !isEmptyValue(availableCurrencies.value.currencie)) {
+      currencie.value = availableCurrencies.value.currencie.id
+    }
+
     return {
       dayRate,
       currencie,
       isDisabled,
       currentOrder,
       listCurrencies,
+      availableCurrencies,
       findConverRate
     }
   }
