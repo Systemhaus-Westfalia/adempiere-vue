@@ -79,7 +79,6 @@ export default defineComponent({
       return !isEmptyValue(refund_reference_currency)
     })
     const listCurrencies = computed(() => {
-      console.log('listCurrencies', availableCurrencies.value.listCurrencies)
       return availableCurrencies.value.listCurrencies
     })
 
@@ -89,11 +88,8 @@ export default defineComponent({
           field: 'fieldsRefunds',
           attribute: 'currencie'
         })
-        console.log('currencie', currency)
-        console.log({ currentOrder: currentOrder.value })
         if (!isEmptyValue(currency)) return currency.id
         if (!isEmptyValue(availableCurrencies.value.currencie)) {
-          console.log({ ...availableCurrencies.value.currencie })
           return availableCurrencies.value.currencie.id
         }
         return ''

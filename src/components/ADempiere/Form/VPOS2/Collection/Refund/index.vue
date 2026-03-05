@@ -354,7 +354,6 @@ export default defineComponent({
     }
 
     function validatePaye() {
-      console.log('validatePaye', 1)
       const currency = store.getters.getAttributeField({
         field: 'fieldsRefunds',
         attribute: 'currencie'
