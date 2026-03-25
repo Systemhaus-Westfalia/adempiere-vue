@@ -192,7 +192,7 @@ along with this program. If not, see <https:www.gnu.org/licenses/>.
 </template>
 
 <script>
-import { defineComponent, computed, ref } from '@vue/composition-api'
+import { defineComponent, computed, ref, watch } from '@vue/composition-api'
 import lang from '@/lang'
 import store from '@/store'
 // Components and Mixins
@@ -243,7 +243,12 @@ export default defineComponent({
       })
     })
 
-    valueUOM.value = props.editLine.uom.uom.id
+    valueUOM.value = props.editLine.uom && props.editLine.uom.uom ? props.editLine.uom.uom.id : 0
+    watch(visible, (isVisible) => {
+      if (isVisible) {
+        valueUOM.value = props.editLine.uom && props.editLine.uom.uom ? props.editLine.uom.uom.id : 0
+      }
+    })
 
     const currency = computed(() => {
       const { price_list } = store.getters.getCurrentOrder

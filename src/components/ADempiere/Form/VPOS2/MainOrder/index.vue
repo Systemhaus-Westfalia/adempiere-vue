@@ -94,6 +94,7 @@ export default defineComponent({
   setup() {
     const currentLine = ref({})
     const isLoadingDiscount = ref(false)
+    const isLoadingUOM = ref(false)
     const isLoadingQty = ref(false)
     const isLoadingPrice = ref(false)
     const orderLineDefinition = computed(() => {
@@ -186,6 +187,7 @@ export default defineComponent({
       if (columnKey === 'CurrentPrice') row.isEditCurrentPrice = true
       if (columnKey === 'QtyEntered') row.isEditQtyEntered = true
       if (columnKey === 'Discount') row.isEditDiscount = true
+      if (columnKey === 'UOM') row.isEditUOM = true
     }
 
     function editLineExit(row, column, cell) {
@@ -193,6 +195,7 @@ export default defineComponent({
       if (columnKey === 'QtyEntered') row.isEditQtyEntered = false
       if (columnKey === 'CurrentPrice') row.isEditCurrentPrice = false
       if (columnKey === 'Discount') row.isEditDiscount = false
+      if (columnKey === 'UOM') row.isEditUOM = false
     }
 
     function updateCurrentPrice(price) {
@@ -395,9 +398,25 @@ export default defineComponent({
           return isLoadingQty.value
         case 'Discount':
           return isLoadingDiscount.value
+        case 'UOM':
+          return isLoadingUOM.value
         default:
           return false
       }
+    }
+
+    function updateUOM(uomId) {
+      const { id: lineId } = currentLine.value
+      if (!lineId) return
+      isLoadingUOM.value = true
+      store.dispatch('updateCurrentLine', {
+        lineId,
+        uom_id: uomId,
+        quantity: currentLine.value.quantity
+      }).finally(() => {
+        isLoadingUOM.value = false
+        if (currentLine.value) currentLine.value.isEditUOM = false
+      })
     }
 
     function getUpdateFunctionFor(columnName) {
@@ -408,6 +427,8 @@ export default defineComponent({
           return updateQuantity
         case 'Discount':
           return updateDiscount
+        case 'UOM':
+          return updateUOM
         default:
           return () => {}
       }
@@ -433,6 +454,8 @@ export default defineComponent({
       displayLineQtyEntered,
       editLine,
       copyCode,
+      isLoadingUOM,
+      updateUOM,
       isLoadingFor,
       getUpdateFunctionFor
     }

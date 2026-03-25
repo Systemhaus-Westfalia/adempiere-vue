@@ -114,6 +114,7 @@ export default {
             const listLines = getters.getListOrderLines
             listLines.push({
               isEditCurrentPrice: false,
+              isEditUOM: false,
               isEditQtyEntered: false,
               isEditDiscount: false,
               ...responseOrder,
@@ -174,6 +175,7 @@ export default {
                 ...line,
                 isEditQtyEntered: false,
                 isEditCurrentPrice: false,
+                isEditUOM: false,
                 isEditDiscount: false,
                 isLoading: false
               }
@@ -236,6 +238,7 @@ export default {
                   ...updateLineResponse,
                   isEditQtyEntered: false,
                   isEditCurrentPrice: false,
+                  isEditUOM: false,
                   isEditDiscount: false,
                   isLoading: false
                 }
@@ -243,6 +246,7 @@ export default {
               return {
                 isEditQtyEntered: false,
                 isEditCurrentPrice: false,
+                isEditUOM: false,
                 isEditDiscount: false,
                 isLoading: false,
                 ...line
