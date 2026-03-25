@@ -297,7 +297,7 @@ export function updateOrderLine({
   quantity,
   price,
   discountRate,
-  uomUuid,
+  uomId,
   isAddQuantity,
   warehouseUuid
 }) {
@@ -312,7 +312,7 @@ export function updateOrderLine({
       quantity,
       price,
       discount_rate: discountRate,
-      uom_uuid: uomUuid,
+      uomId: uomId,
       is_add_quantity: isAddQuantity,
       warehouse_uuid: warehouseUuid
     }

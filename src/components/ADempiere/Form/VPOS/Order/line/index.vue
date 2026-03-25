@@ -609,7 +609,7 @@ export default {
       updateOrderLine({
         posUuid: this.currentPointOfSales.uuid,
         orderLineUuid: this.currentLine.uuid,
-        uomUuid: uom.uom.uuid
+        uomId: uom.uom.id
       })
         .then(response => {
           this.$message({
