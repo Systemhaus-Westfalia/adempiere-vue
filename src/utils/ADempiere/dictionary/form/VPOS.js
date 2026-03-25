@@ -191,15 +191,15 @@ export function displayLineQtyEntered({
 }) {
   const {
     uom,
-    quantity_ordered
+    quantity
   } = row
   let precision = 0
-  if (isEmptyValue(uom.uom)) return formatQuantity({ value: quantity_ordered })
+  if (isEmptyValue(uom.uom)) return formatQuantity({ value: quantity })
   if (!isEmptyValue(row.uom.uom.standard_precision)) {
     precision = row.uom.uom.standard_precision
   }
   return formatQuantity({
-    value: quantity_ordered,
+    value: quantity,
     precision
   })
 }

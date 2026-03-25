@@ -172,10 +172,8 @@ export default {
   findUom({ commit, rootGetters }, {
     productId
   }) {
-    const posUuid = rootGetters.posAttributes.currentPointOfSales.uuid
     return listProductConversionsRequest({
-      posUuid,
-      productId
+      id: productId
     })
       .then(response => {
         return response

@@ -27,10 +27,12 @@
 <script>
 import EditAmount from '@/components/ADempiere/Form/VPOS2/MainOrder/OptionLine/editLine/editAmount.vue'
 import EditQtyEntered from '@/components/ADempiere/Form/VPOS2/MainOrder/OptionLine/editLine/editQtyEntered.vue'
+import EditUOM from '@/components/ADempiere/Form/VPOS2/MainOrder/OptionLine/editLine/editUOM.vue'
 
 export default {
   name: 'EditableCell',
   components: {
+    EditUOM,
     EditAmount,
     EditQtyEntered
   },
@@ -72,6 +74,8 @@ export default {
           return this.row.isEditQtyEntered
         case 'Discount':
           return this.row.isEditDiscount
+        case 'UOM':
+          return this.row.isEditUOM
         default:
           return false
       }
@@ -83,6 +87,8 @@ export default {
           return 'EditAmount'
         case 'QtyEntered':
           return 'EditQtyEntered'
+        case 'UOM':
+          return 'EditUOM'
         default:
           return null
       }
@@ -92,9 +98,11 @@ export default {
         case 'CurrentPrice':
           return { value: Number(this.row.price) }
         case 'QtyEntered':
-          return { qty: Number(this.row.quantity_ordered) }
+          return { qty: Number(this.row.quantity) }
         case 'Discount':
           return { value: Number(this.row.discount_rate), precision: 0 }
+        case 'UOM':
+          return { value: this.row.uom && this.row.uom.uom ? this.row.uom.uom.id : 0, productId: this.row.product ? this.row.product.id : 0 }
         default:
           return {}
       }
