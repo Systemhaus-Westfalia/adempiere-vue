@@ -60,6 +60,13 @@ export const NUMBER_RECORDS_PER_PAGE = [
 ]
 
 /**
+ * Delay time to search
+ * to avoid multiple request to backend
+ */
+export const SEARCH_DELAY = 1000
+export const PAGE_CHANGE_DELAY = 500
+
+/**
  * Generate index to element-ui table
  * @link https://element.eleme.cn/#/es/component/table#indice-personalizado
  * @param {number} indexRow current index of row

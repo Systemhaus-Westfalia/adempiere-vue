@@ -141,6 +141,10 @@ import { defineComponent, computed, ref } from '@vue/composition-api'
 
 import store from '@/store'
 
+// Constants
+import {
+  SEARCH_DELAY, PAGE_CHANGE_DELAY
+} from '@/utils/ADempiere/tableUtils'
 // Components and Mixins
 import CustomPagination from '@/components/ADempiere/DataTable/Components/CustomPagination.vue'
 import IndexColumn from '@/components/ADempiere/DataTable/Components/IndexColumn.vue'
@@ -159,9 +163,6 @@ export default defineComponent({
   },
 
   setup() {
-    /**
-     * Ref
-     */
     const searchValue = ref('')
     const isLoading = ref(false)
     const isLoadingRecords = ref(false)
@@ -169,25 +170,16 @@ export default defineComponent({
     const selection = ref(0)
     const selectProduct = ref({})
     let timeoutSearch
-    /**
-     * Computed
-     */
-    const listProducto = computed(() => {
-      return store.getters.getProductList
-    })
-    const recordCount = computed(() => {
-      return store.getters.getProductCount
-    })
+
+    const listProducto = computed(() => store.getters.getProductList)
+    const recordCount = computed(() => store.getters.getProductCount)
     const pageToken = computed(() => {
       const page = store.getters.getProductPageToken
       if (page) return Number(page.slice(-1))
       return 0
     })
+    const order = computed(() => store.getters.getCurrentOrder)
 
-    const order = computed(() => {
-      return store.getters.getCurrentOrder
-    })
-    // Methods
     function copyCode(row) {
       copyToClipboard({
         text: row.product.value,
@@ -195,41 +187,53 @@ export default defineComponent({
       })
     }
 
+    function fetchProducts({ search = searchValue.value, pageSize = pageSizeNumber.value, pageToken } = {}) {
+      return store.dispatch('searchProductList', {
+        searchValue: search,
+        pageSize,
+        pageToken
+      })
+    }
+
     function searchProduct(search) {
       clearTimeout(timeoutSearch)
       isLoading.value = true
       timeoutSearch = setTimeout(() => {
-        store.dispatch('searchProductList', {
-          searchValue: search,
-          pageSize: pageSizeNumber.value
-        })
+        fetchProducts({ search })
           .finally(() => {
             isLoading.value = false
             searchValue.value = ''
           })
-      }, 1000)
+      }, SEARCH_DELAY)
     }
 
     function displayAmount(row) {
-      const {
-        price_standard,
-        currency
-      } = row
+      const { price_standard, currency } = row
       return formatPrice({ value: price_standard, currency: currency.iSOCode })
+    }
+
+    function addProductLine(productId) {
+      store.dispatch('newLine', { productId })
     }
 
     function addProduct(row) {
       if (isEmptyValue(order.value.id)) {
         store.dispatch('newOrder')
-          .finally(() => {
-            store.dispatch('newLine', {
-              productId: row.product.id
-            })
-          })
+          .finally(() => addProductLine(row.product.id))
       } else {
-        store.dispatch('newLine', {
-          productId: row.product.id
-        })
+        const existingLine = store.getters.getListOrderLines.find(
+          line => line.product.id === row.product.id
+        )
+        if (!isEmptyValue(existingLine)) {
+          store.dispatch('updateCurrentLine', {
+            lineId: existingLine.id,
+            quantity: Number(existingLine.quantity_ordered) + 1,
+            isListLine: true
+          })
+          close(false)
+          return
+        }
+        addProductLine(row.product.id)
       }
       close(false)
     }
@@ -249,37 +253,29 @@ export default defineComponent({
       isLoading.value = true
       pageSizeNumber.value = pageSize
       timeoutSearch = setTimeout(() => {
-        store.dispatch('searchProductList', {
-          searchValue: searchValue.value,
-          pageSize: pageSize
-        })
+        fetchProducts({ pageSize })
           .finally(() => {
             isLoading.value = false
           })
-      }, 500)
+      }, PAGE_CHANGE_DELAY)
     }
 
     function handleChangePage(pageNumber) {
       isLoading.value = true
       timeoutSearch = setTimeout(() => {
-        store.dispatch('searchProductList', {
-          searchValue: searchValue.value,
-          pageSize: pageSizeNumber.value,
+        fetchProducts({
           pageToken: store.getters.getProductPageToken + '-' + pageNumber
         })
           .finally(() => {
             isLoading.value = false
           })
-      }, 500)
+      }, PAGE_CHANGE_DELAY)
     }
 
     function refresh() {
       isLoading.value = true
       isLoadingRecords.value = true
-      store.dispatch('searchProductList', {
-        searchValue: searchValue.value,
-        pageSize: pageSizeNumber.value
-      })
+      fetchProducts()
         .finally(() => {
           isLoading.value = false
           isLoadingRecords.value = false
