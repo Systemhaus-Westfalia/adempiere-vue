@@ -195,9 +195,11 @@ export default defineComponent({
               })
             return
           }
+          const currentUomId = isProduct.uom && isProduct.uom.uom ? isProduct.uom.uom.id : undefined
           store.dispatch('updateCurrentLine', {
             lineId: isProduct.id,
-            quantity: Number(isProduct.quantity_ordered) + 1,
+            quantity: Number(isProduct.quantity) + 1,
+            uom_id: currentUomId,
             isListLine: true
           })
             .finally(updateLineResponse => {
