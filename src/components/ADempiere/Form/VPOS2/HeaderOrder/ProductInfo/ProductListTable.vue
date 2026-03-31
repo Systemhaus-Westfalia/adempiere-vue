@@ -228,7 +228,7 @@ export default defineComponent({
           const currentUomId = existingLine.uom && existingLine.uom.uom
             ? existingLine.uom.uom.id
             : undefined
-          store.dispatch("updateCurrentLine", {
+          store.dispatch('updateCurrentLine', {
             lineId: existingLine.id,
             quantity: Number(existingLine.quantity) + 1,
             uom_id: currentUomId,
