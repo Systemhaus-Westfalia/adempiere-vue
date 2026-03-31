@@ -225,9 +225,13 @@ export default defineComponent({
           line => line.product.id === row.product.id
         )
         if (!isEmptyValue(existingLine)) {
+          const currentUomId = existingLine.uom && existingLine.uom.uom
+            ? existingLine.uom.uom.id
+            : undefined
           store.dispatch('updateCurrentLine', {
             lineId: existingLine.id,
-            quantity: Number(existingLine.quantity_ordered) + 1,
+            quantity: Number(existingLine.quantity) + 1,
+            uom_id: currentUomId,
             isListLine: true
           })
           close(false)
