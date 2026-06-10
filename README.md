@@ -101,22 +101,14 @@ Detailed changes for each release are documented in the [release notes](https://
 <a href="http://erpya.com/">
   <img alt="ERP Consultores y Asociados" width="250px" src="https://erpya.com/wp-content/uploads/2017/11/ERP-logotipo-H-color.png" />
 </a>
-&nbsp;&nbsp;&nbsp;
+<br>
 <a href="http://westfalia-it.com/">
-  <img alt="Systemhaus Westfalia" width="150px" src="http://westfalia-it.com/wp-content/uploads/2021/04/logo_.gif" />
+  <img alt="Systemhaus Westfalia" height="60px" src="http://westfalia-it.com/wp-content/uploads/2021/04/logo_.gif" />
 </a>
-&nbsp;&nbsp;&nbsp;
+<br>
 <a href="http://openupsolutions.com/">
   <img alt="OpenUp Solutions" width="250px" src="https://openupsolutions.com/wp-content/uploads/2021/08/logo-openup-horizontal.jpg" />
 </a>
-
-Become a sponsor and get your logo on our README on GitHub with a link to your site. [Become a sponsor](https://www.paypal.me/YamelSenih)
-
-## Donate
-
-If you find this project useful, you can help make a better UI.
-
-[Paypal Me](https://www.paypal.me/YamelSenih)
 
 ### Some Contributors
 
@@ -158,7 +150,6 @@ Modern browsers and Internet Explorer 10+
 
 This project was forked from [Vue-Element-Admin](https://github.com/PanJiaChen/vue-element-admin) by [PanJiaChen / 花裤衩](https://github.com/PanJiaChen) under [MIT license](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE) and relicensed to [GNU/GPL v3](https://github.com/adempiere/adempiere-vue/blob/master/LICENSE) by [Yamel Senih](https://github.com/yamelsenih).
 
-- [Donate](https://www.paypal.me/YamelSenih)
 - [Forked From](https://github.com/PanJiaChen/vue-element-admin)
 
 ## Initial Contributors
