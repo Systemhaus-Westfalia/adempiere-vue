@@ -101,11 +101,13 @@ Detailed changes for each release are documented in the [release notes](https://
 <a href="http://erpya.com/">
   <img alt="ERP Consultores y Asociados" width="250px" src="https://erpya.com/wp-content/uploads/2017/11/ERP-logotipo-H-color.png" />
 </a>
+&nbsp;&nbsp;&nbsp;
 <a href="http://westfalia-it.com/">
-  <img width="150px" src="http://westfalia-it.com/wp-content/uploads/2021/04/logo_.gif" />
+  <img alt="Systemhaus Westfalia" width="150px" src="http://westfalia-it.com/wp-content/uploads/2021/04/logo_.gif" />
 </a>
+&nbsp;&nbsp;&nbsp;
 <a href="http://openupsolutions.com/">
-  <img width="250px" src="https://openupsolutions.com/wp-content/uploads/2021/08/logo-openup-horizontal.jpg" />
+  <img alt="OpenUp Solutions" width="250px" src="https://openupsolutions.com/wp-content/uploads/2021/08/logo-openup-horizontal.jpg" />
 </a>
 
 Become a sponsor and get your logo on our README on GitHub with a link to your site. [Become a sponsor](https://www.paypal.me/YamelSenih)
