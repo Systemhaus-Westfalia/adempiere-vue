@@ -45,7 +45,7 @@ It is a great UI for [ADempiere ERP, CRM & SCM](https://github.com/adempiere/ade
   - **Password**: `GardenAdmin`
 
 
-- [Documentation](https://adempiere.github.io/adempiere-vue-site/)
+- [Documentation](./docs/README.md)
 
 - [Gitter](https://gitter.im/adempiere/adempiere-vue)
 
@@ -272,7 +272,7 @@ yarn lint
 yarn lint --fix
 ```
 
-Refer to [Documentation](https://adempiere.github.io/adempiere-vue/guide/essentials/deploy.html#build) for more information
+Refer to [Deploy documentation](./docs/framework/essentials/deploy.md) for more information
 
 
 ## Changelog
