@@ -33,18 +33,11 @@ Architecture, development setup, component reference, POS guide, debugging case 
 
 ## Introduction
 
-[adempiere-vue](https://github.com/adempiere/adempiere-vue) is the modern Vue-based UI for [ADempiere ERP, CRM & SCM](https://github.com/adempiere/adempiere). It is based on [vue](https://github.com/vuejs/vue) and uses the UI toolkit [element-ui](https://github.com/ElemeFE/element).
+**adempiere-vue** is an additional browser-based GUI for [ADempiere ERP, CRM & SCM](https://github.com/adempiere/adempiere) — a modern Vue alternative to ADempiere's built-in ZK interface. It is based on [vue](https://github.com/vuejs/vue) and uses the UI toolkit [element-ui](https://github.com/ElemeFE/element).
 
 ![POS Image](docs/.vuepress/public/images/forms/point-of-sales/pos-en.png)
 
-It communicates with the ADempiere backend via [gRPC](https://grpc.io/), proxied through the [adempiere-ui-gateway](https://github.com/adempiere/adempiere-ui-gateway) stack.
-
-This project was forked from [Vue-Element-Admin](https://github.com/PanJiaChen/vue-element-admin) by [PanJiaChen / 花裤衩](https://github.com/PanJiaChen) under [MIT license](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE) and relicensed to [GNU/GPL v3](https://github.com/adempiere/adempiere-vue/blob/master/LICENSE) by [Yamel Senih](https://github.com/yamelsenih).
-
-- [Donate](https://www.paypal.me/YamelSenih)
-- [Forked From](https://github.com/PanJiaChen/vue-element-admin)
-
-**This project does not support legacy browsers (e.g. IE). Add polyfills if needed.**
+It is deployed as part of the [adempiere-ui-gateway](https://github.com/adempiere/adempiere-ui-gateway) Docker Compose stack, which serves the application files and routes API calls: nginx receives the request, Envoy translates it from HTTP/JSON to gRPC, and the ADempiere gRPC server executes the business logic against PostgreSQL. Once loaded, the application runs entirely in the browser.
 
 ## Getting started
 
@@ -158,6 +151,13 @@ Modern browsers and Internet Explorer 10+
 ## Previous License
 
 [MIT](./PREVIOUS-LICENSE)
+
+## Origins
+
+This project was forked from [Vue-Element-Admin](https://github.com/PanJiaChen/vue-element-admin) by [PanJiaChen / 花裤衩](https://github.com/PanJiaChen) under [MIT license](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE) and relicensed to [GNU/GPL v3](https://github.com/adempiere/adempiere-vue/blob/master/LICENSE) by [Yamel Senih](https://github.com/yamelsenih).
+
+- [Donate](https://www.paypal.me/YamelSenih)
+- [Forked From](https://github.com/PanJiaChen/vue-element-admin)
 
 ## Initial Contributors
 
