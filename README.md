@@ -102,9 +102,7 @@ Detailed changes for each release are documented in the [release notes](https://
   <img alt="ERP Consultores y Asociados" width="250px" src="https://erpya.com/wp-content/uploads/2017/11/ERP-logotipo-H-color.png" />
 </a>
 <br>
-<a href="http://westfalia-it.com/">
-  <img alt="Systemhaus Westfalia" height="60px" src="http://westfalia-it.com/wp-content/uploads/2021/04/logo_.gif" />
-</a>
+[Systemhaus Westfalia](http://westfalia-it.com/)
 <br>
 <a href="http://openupsolutions.com/">
   <img alt="OpenUp Solutions" width="250px" src="https://openupsolutions.com/wp-content/uploads/2021/08/logo-openup-horizontal.jpg" />
