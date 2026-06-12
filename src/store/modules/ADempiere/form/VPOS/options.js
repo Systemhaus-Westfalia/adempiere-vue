@@ -67,7 +67,7 @@ const options = {
     current: {},
     listLine: [],
     isShowCheck: false,
-    isCreateNewSubstituteOrder: true
+    isCreateNewSubstituteOrder: false
   },
   cashClosings: {
     isDetails: false,
