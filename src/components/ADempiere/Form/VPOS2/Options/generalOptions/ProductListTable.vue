@@ -39,6 +39,7 @@
       :data="listProducto"
       :empty-text="$t('quickAccess.searchWithEnter')"
       highlight-current-row
+      stripe
       :border="true"
       :height="height"
       fit
