@@ -51,8 +51,8 @@ along with this program. If not, see <https:www.gnu.org/licenses/>.
               </div>
               <div style="width: 30%;float: right;margin: 0px">
                 <p style="overflow: hidden;text-overflow: ellipsis;text-align: end;margin: 0px">
-                  {{ formatQuantity({ value: item.quantity_ordered.value }) }}
-                  <!-- {{ item.quantity_ordered }} -->
+                  {{ formatQuantity({ value: item.quantity }) }}
+                  <!-- {{ item.quantity }} -->
                 </p>
               </div>
             </div>
@@ -89,7 +89,7 @@ along with this program. If not, see <https:www.gnu.org/licenses/>.
               <el-button v-if="scope.row.isLoading" :loading="scope.row.isLoading" />
               <edit-qty-entered
                 v-else
-                :qty="Number(scope.row.quantity_ordered.value)"
+                :qty="Number(scope.row.quantity)"
                 :handle-change="updateQuantity"
               />
             </span>
@@ -245,10 +245,10 @@ export default defineComponent({
     function handleSelect(item) {
       const {
         id,
-        quantity_ordered
+        quantity
       } = item
       store.dispatch('createRMALine', {
-        quantity: quantity_ordered.value,
+        quantity: quantity,
         sourceOrderLineId: id
       })
     }

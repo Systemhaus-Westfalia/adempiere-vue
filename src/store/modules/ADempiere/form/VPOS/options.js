@@ -783,7 +783,7 @@ export default {
         if (
           isEmptyValue(currentPos.id) ||
           isEmptyValue(currentRMA.id)
-        ) resolve({})
+        ) return resolve({})
         createRMALine({
           posId: currentPos.id,
           rmaId: currentRMA.id,
@@ -792,6 +792,7 @@ export default {
         })
           .then(response => {
             dispatch('createRMA')
+            dispatch('listRMALine')
             resolve(response)
           })
           .catch(error => {
