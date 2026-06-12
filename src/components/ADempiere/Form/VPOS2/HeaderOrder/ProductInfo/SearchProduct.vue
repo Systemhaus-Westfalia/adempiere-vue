@@ -250,3 +250,14 @@ export default defineComponent({
   display: contents;
 }
 </style>
+<style lang="scss">
+.my-autocomplete {
+  li:nth-child(even) {
+    background-color: #edf1f7;
+  }
+  li.highlighted,
+  li:hover {
+    background-color: #d3dae8 !important;
+  }
+}
+</style>
