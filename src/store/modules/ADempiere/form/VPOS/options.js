@@ -959,9 +959,6 @@ export default {
         const currentRMA = getters.getAttributeRMA({
           attribute: 'current'
         })
-        const isCreateNewSubstituteOrder = getters.getAttributeRMA({
-          attribute: 'isCreateNewSubstituteOrder'
-        })
         if (
           isEmptyValue(currentPos.id) ||
           isEmptyValue(currentRMA.id)
@@ -991,6 +988,9 @@ export default {
                 commit('setAttributeRMA', {
                   attribute: 'list',
                   value: []
+                })
+                const isCreateNewSubstituteOrder = getters.getAttributeRMA({
+                  attribute: 'isCreateNewSubstituteOrder'
                 })
                 if (isCreateNewSubstituteOrder) {
                   dispatch('createOrderFromRMA', {
