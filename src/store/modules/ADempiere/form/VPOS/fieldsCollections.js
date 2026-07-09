@@ -391,7 +391,7 @@ export default {
             let validateRecords = []
             const { records } = response
             if (!isEmptyValue(records)) {
-              validateRecords = records.filter(list => Number(list.open_amount.value) > 0)
+              validateRecords = records.filter(list => Number(list.open_amount) > 0)
             }
             commit('setAttributeField', {
               field: 'customerCredits',

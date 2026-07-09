@@ -317,6 +317,13 @@ export function getPaymentValues({
     field: 'field',
     attribute: 'referenceNo'
   })
+  // Set invoice_reference_id from store if not passed (credit note payment)
+  if (isEmptyValue(invoice_reference_id)) {
+    invoice_reference_id = store.getters.getAttributeField({
+      field: 'field',
+      attribute: 'invoiceReferenceId'
+    })
+  }
   const currentAccount = store.getters.getAttributeField({
     field: 'bankAccounts',
     attribute: 'currentAccount'
@@ -440,6 +447,11 @@ export function clearFieldsCollections() {
   store.commit('setAttributeField', {
     field: 'field',
     attribute: 'referenceNo',
+    value
+  })
+  store.commit('setAttributeField', {
+    field: 'field',
+    attribute: 'invoiceReferenceId',
     value
   })
   store.commit('setAttributeField', {

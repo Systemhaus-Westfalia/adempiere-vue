@@ -94,7 +94,12 @@ export default defineComponent({
         attribute: 'referenceNo',
         value: creditMemo.document_no
       })
-      store.commit('setPayAmount', creditMemo.open_amount.value)
+      store.commit('setAttributeField', {
+        field: 'field',
+        attribute: 'invoiceReferenceId',
+        value: creditMemo.id
+      })
+      store.commit('setPayAmount', creditMemo.open_amount)
       store.commit('setAttributeField', {
         field: 'field',
         attribute: 'description',
@@ -111,6 +116,11 @@ export default defineComponent({
       store.commit('setAttributeField', {
         field: 'field',
         attribute: 'referenceNo',
+        value
+      })
+      store.commit('setAttributeField', {
+        field: 'field',
+        attribute: 'invoiceReferenceId',
         value
       })
       store.commit('setPayAmount', value)
