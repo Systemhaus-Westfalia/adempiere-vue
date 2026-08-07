@@ -425,6 +425,7 @@ export default defineComponent({
         reference_no: referenceNo.value,
         description: description.value,
         amount: amount.value,
+        allocate_payment_id: currentPaymentMethod.value.id,
         tender_type_code: currentPaymentMethod.value.payment_method.tender_type,
         currency_id: currency.id,
         payment_method_id: currentPaymentMethod.value.payment_method.id,

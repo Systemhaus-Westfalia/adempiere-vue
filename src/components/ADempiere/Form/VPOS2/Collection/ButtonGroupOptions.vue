@@ -181,14 +181,12 @@ export default defineComponent({
             store.dispatch('process', {})
           },
           isDisabledDone: () => {
-            console.log(currentOrder.value.refund_amount)
             const typeOptions = store.getters.getAttributeField({
               field: 'fieldsRefunds',
               attribute: 'typeOptions'
             })
             if (typeOptions !== '3') {
-              console.log({ typeOptions, refund_amount }, convertToNumber(currentOrder.value.refund_amount))
-              return convertToNumber(currentOrder.value.refund_amount) === 0
+              return !(convertToNumber(currentOrder.value.refund_amount) === 0)
             } else {
               return false
             }
