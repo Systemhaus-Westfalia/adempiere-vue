@@ -89,7 +89,7 @@
         :total-records="recordCount"
         :selection="selection"
         :page-number="pageToken"
-        :page-size="dataList.length"
+        :page-size="pageSizeNumber"
         :handle-change-page-number="handleChangePage"
         :handle-change-page-size="handleSizeChange"
       />
@@ -117,7 +117,8 @@
 import {
   defineComponent,
   computed,
-  ref
+  ref,
+  watch
 } from '@vue/composition-api'
 
 import store from '@/store'
@@ -156,6 +157,14 @@ export default defineComponent({
     const selection = ref(0)
     const currentOrder = ref({})
     const pageSizeNumber = ref(15)
+    const currentPage = ref(1)
+    const tokenPrefix = ref('')
+
+    watch(() => store.getters.getOrderRecords.pageToken, (newToken) => {
+      if (!isEmptyValue(newToken)) {
+        tokenPrefix.value = newToken.slice(0, newToken.lastIndexOf('-') + 1)
+      }
+    }, { immediate: true })
 
     const isLoading = computed(() => {
       return store.getters.getLoadingRecord
@@ -167,8 +176,12 @@ export default defineComponent({
 
     const pageToken = computed(() => {
       const page = store.getters.getOrderRecords.pageToken
-      if (page) return Number(page.slice(-1)) - 1
-      return 0
+      if (!isEmptyValue(page)) {
+        // page is "UUID-N" where N is the next page; current page = N - 1
+        const nextPage = parseInt(page.slice(page.lastIndexOf('-') + 1))
+        return nextPage - 1
+      }
+      return currentPage.value
     })
 
     const dataListOrders = computed(() => {
@@ -224,11 +237,17 @@ export default defineComponent({
     }
 
     function handleChangePage(pageNumber) {
+      currentPage.value = pageNumber
       setTimeout(() => {
+        const currentToken = store.getters.getOrderRecords.pageToken
+        const prefix = !isEmptyValue(currentToken)
+          ? currentToken.slice(0, currentToken.lastIndexOf('-') + 1)
+          : tokenPrefix.value
+        const pageToken = !isEmptyValue(prefix) ? prefix + pageNumber : undefined
         store.dispatch('listOrder', {
           ...props.searchParameters,
           pageSize: pageSizeNumber.value,
-          pageToken: store.getters.getOrderRecords.pageToken + '-' + pageNumber
+          pageToken: pageToken
         })
       }, 500)
     }
@@ -246,6 +265,7 @@ export default defineComponent({
     return {
       selection,
       pageToken,
+      currentPage,
       isLoading,
       recordCount,
       currentOrder,
